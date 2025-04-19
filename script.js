@@ -1,10 +1,10 @@
 $(document).ready(function () {
-  // Hamburger menu toggle
-  $("#menu-toggle").click(function () {
-    $("#navbar").toggleClass("active");
+  $("#menu-icon").click(function () {
+    $("#nav-menu").toggleClass("active");
   });
+
   $(".navbar a").click(function () {
-    $("#navbar").removeClass("active");
+    $("#nav-menu").removeClass("active");
   });
 
 
@@ -151,17 +151,4 @@ dots.forEach((dot, index) => {
     currentIndex = index; // Set the currentIndex to the clicked dot's index
     updateSlider();
   });
-});
-
-$(document).ready(function () {
-  // Hamburger menu toggle
-  $("#menu-icon").click(function () {
-    $("#nav-menu").toggleClass("active");
-  });
-
-  $(".navbar a").click(function () {
-    $("#nav-menu").removeClass("active");
-  });
-
-  // ... the rest of your JavaScript code (sticky header, scroll animations, etc.) ...
 });
