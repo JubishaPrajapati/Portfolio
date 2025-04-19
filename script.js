@@ -1,9 +1,17 @@
 $(document).ready(function () {
-  $("#menu-icon").click(function () {
+  // $("#menu-icon").click(function () {
+  //   $("#nav-menu").toggleClass("active");
+  // });
+
+  // $(".navbar a").click(function () {
+  //   $("#nav-menu").removeClass("active");
+  // });
+  $("#menu-icon").on('click touchstart', function (e) {
+    e.preventDefault();
     $("#nav-menu").toggleClass("active");
   });
 
-  $(".navbar a").click(function () {
+  $(".navbar a").on('click touchstart', function () {
     $("#nav-menu").removeClass("active");
   });
 
