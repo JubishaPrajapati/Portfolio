@@ -1,5 +1,4 @@
 $(document).ready(function () {
-<<<<<<< HEAD
 
   // Hamburger menu toggle
   $("#menu-icon").click(function () {
@@ -10,25 +9,6 @@ $(document).ready(function () {
     $("#nav-menu").removeClass("active");
   });
 
-=======
-  // $("#menu-icon").click(function () {
-  //   $("#nav-menu").toggleClass("active");
-  // });
-
-  // $(".navbar a").click(function () {
-  //   $("#nav-menu").removeClass("active");
-  // });
-  $("#menu-icon").on('click touchstart', function (e) {
-    e.preventDefault();
-    $("#nav-menu").toggleClass("active");
-  });
-
-  $(".navbar a").on('click touchstart', function () {
-    $("#nav-menu").removeClass("active");
-  });
-
-
->>>>>>> 9baba468bea50da7fae7670bc28b0a1e53c91234
   //sticky header
   $(window).scroll(function () {
     if ($(this).scrollTop() > 1) {
