@@ -1,59 +1,57 @@
-$(document).ready(function () {
-
+document.addEventListener("DOMContentLoaded", function () {
   // Hamburger menu toggle
-  $("#menu-icon").click(function () {
-    $("#nav-menu").toggleClass("active");
+  const menuIcon = document.getElementById("menu-icon");
+  const navMenu = document.getElementById("nav-menu");
+
+  menuIcon.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
   });
 
-  $(".navbar a").click(function () {
-    $("#nav-menu").removeClass("active");
+  document.querySelectorAll(".navbar a").forEach(link => {
+    link.addEventListener("click", () => {
+      navMenu.classList.remove("active");
+    });
   });
 
-  //sticky header
-  $(window).scroll(function () {
-    if ($(this).scrollTop() > 1) {
-      $(".header-area").addClass("sticky");
+  // Sticky header and active section update
+  window.addEventListener("scroll", () => {
+    const header = document.querySelector(".header-area");
+    if (window.scrollY > 1) {
+      header.classList.add("sticky");
     } else {
-      $(".header-area").removeClass("sticky");
+      header.classList.remove("sticky");
     }
-
-    // Update the active section in the header
     updateActiveSection();
   });
 
-  $(".header ul li a").click(function (e) {
-    e.preventDefault();
+  document.querySelectorAll(".header ul li a").forEach(link => {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
 
-    var target = $(this).attr("href");
+      const target = document.querySelector(this.getAttribute("href"));
 
-    if ($(target).hasClass("active-section")) {
-      return;
-    }
+      if (!target || target.classList.contains("active-section")) {
+        return;
+      }
 
-    if (target === "#home") {
-      $("html, body").animate(
-        {
-          scrollTop: 0
-        },
-        500
-      );
-    } else {
-      var offset = $(target).offset().top - 40;
+      let offset = target.offsetTop;
+      if (this.getAttribute("href") === "#home") {
+        offset = 0;
+      } else {
+        offset = offset - 40;
+      }
 
-      $("html, body").animate(
-        {
-          scrollTop: offset
-        },
-        500
-      );
-    }
+      window.scrollTo({
+        top: offset,
+        behavior: "smooth"
+      });
 
-    $(".header ul li a").removeClass("active");
-    $(this).addClass("active");
+      document.querySelectorAll(".header ul li a").forEach(a => a.classList.remove("active"));
+      this.classList.add("active");
+    });
   });
 
-
-  //Initial content revealing js
+  // ScrollReveal animations
   ScrollReveal({
     distance: "100px",
     duration: 2000,
@@ -73,52 +71,48 @@ $(document).ready(function () {
     origin: "bottom"
   });
 
-  //contact form to excel sheet
+  // Contact form to Google Sheets
   const scriptURL = 'https://script.google.com/macros/s/AKfycbzUSaaX3XmlE5m9YLOHOBrRuCh2Ohv49N9bs4bew7xPd1qlgpvXtnudDs5Xhp3jF-Fx/exec';
-  const form = document.forms['submitToGoogleSheet']
-  const msg = document.getElementById("msg")
+  const form = document.forms['submitToGoogleSheet'];
+  const msg = document.getElementById("msg");
 
   form.addEventListener('submit', e => {
-    e.preventDefault()
+    e.preventDefault();
     fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-      .then(response => {
-        msg.innerHTML = "Message sent successfully"
-        setTimeout(function () {
-          msg.innerHTML = ""
-        }, 5000)
-        form.reset()
+      .then(() => {
+        msg.innerHTML = "Message sent successfully";
+        setTimeout(() => { msg.innerHTML = ""; }, 5000);
+        form.reset();
       })
-      .catch(error => console.error('Error!', error.message))
-  })
-
+      .catch(error => console.error('Error!', error.message));
+  });
 });
 
 function updateActiveSection() {
-  var scrollPosition = $(window).scrollTop();
+  const scrollPosition = window.scrollY;
+  const links = document.querySelectorAll(".header ul li a");
 
-  // Checking if scroll position is at the top of the page
   if (scrollPosition === 0) {
-    $(".header ul li a").removeClass("active");
-    $(".header ul li a[href='#home']").addClass("active");
+    links.forEach(link => link.classList.remove("active"));
+    const homeLink = document.querySelector(".header ul li a[href='#home']");
+    if (homeLink) homeLink.classList.add("active");
     return;
   }
 
-  // Iterate through each section and update the active class in the header
-  $("section").each(function () {
-    var target = $(this).attr("id");
-    var offset = $(this).offset().top;
-    var height = $(this).outerHeight();
+  document.querySelectorAll("section").forEach(section => {
+    const target = section.getAttribute("id");
+    const offset = section.offsetTop;
+    const height = section.offsetHeight;
 
-    if (
-      scrollPosition >= offset - 40 &&
-      scrollPosition < offset + height - 40
-    ) {
-      $(".header ul li a").removeClass("active");
-      $(".header ul li a[href='#" + target + "']").addClass("active");
+    if (scrollPosition >= offset - 40 && scrollPosition < offset + height - 40) {
+      links.forEach(link => link.classList.remove("active"));
+      const activeLink = document.querySelector(`.header ul li a[href="#${target}"]`);
+      if (activeLink) activeLink.classList.add("active");
     }
   });
 }
 
+// Slider functionality
 const slider = document.querySelector('.slider');
 const slides = document.querySelectorAll('.slide');
 const prevBtn = document.querySelector('.prev');
@@ -128,28 +122,23 @@ let currentIndex = 0;
 
 function updateSlider() {
   slider.style.transform = `translateX(-${currentIndex * 100}%)`;
-
-  // Update the active dot
   dots.forEach(dot => dot.classList.remove('active'));
   dots[currentIndex].classList.add('active');
 }
 
-// Handle next button click
 nextBtn.addEventListener('click', () => {
-  currentIndex = (currentIndex + 1) % slides.length; // Move to the next slide, loop back if at the end
+  currentIndex = (currentIndex + 1) % slides.length;
   updateSlider();
 });
 
-// Handle previous button click
 prevBtn.addEventListener('click', () => {
-  currentIndex = (currentIndex - 1 + slides.length) % slides.length; // Move to the previous slide, loop back if at the beginning
+  currentIndex = (currentIndex - 1 + slides.length) % slides.length;
   updateSlider();
 });
 
-// Handle dot clicks (optional)
 dots.forEach((dot, index) => {
   dot.addEventListener('click', () => {
-    currentIndex = index; // Set the currentIndex to the clicked dot's index
+    currentIndex = index;
     updateSlider();
   });
 });
