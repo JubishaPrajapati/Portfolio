@@ -1,4 +1,5 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {     //triggered after html is fully parsed and dom has been built
+
   // Hamburger menu toggle
   const menuIcon = document.getElementById("menu-icon");
   const navMenu = document.getElementById("nav-menu");
@@ -69,22 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   ScrollReveal().reveal(".projects, .contact", {
     origin: "bottom"
-  });
-
-  // Contact form to Google Sheets
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbzUSaaX3XmlE5m9YLOHOBrRuCh2Ohv49N9bs4bew7xPd1qlgpvXtnudDs5Xhp3jF-Fx/exec';
-  const form = document.forms['submitToGoogleSheet'];
-  const msg = document.getElementById("msg");
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-      .then(() => {
-        msg.innerHTML = "Message sent successfully";
-        setTimeout(() => { msg.innerHTML = ""; }, 5000);
-        form.reset();
-      })
-      .catch(error => console.error('Error!', error.message));
   });
 });
 
